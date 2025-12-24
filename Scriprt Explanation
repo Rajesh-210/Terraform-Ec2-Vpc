@@ -1,0 +1,155 @@
+Terraform AWS VPC & EC2 Infrastructure
+📌 Project Overview
+
+This project uses Terraform to provision a complete AWS infrastructure that includes:
+
+Custom VPC
+
+Public subnets in multiple Availability Zones
+
+Internet Gateway & Route Tables
+
+Security Group with inbound/outbound rules
+
+Multiple EC2 instances with configurable root volumes
+
+The infrastructure is deployed in the AWS ap-south-1 (Mumbai) region.
+
+🧱 Architecture Components
+
+VPC: 10.0.0.0/16
+
+Public Subnets:
+
+10.0.1.0/24 (ap-south-1a)
+
+10.0.2.0/24 (ap-south-1b)
+
+Internet Gateway
+
+Public Route Table
+
+Security Group (Allow all – demo purpose)
+
+4 EC2 Instances
+
+Jenkins / Ansible Server
+
+Docker / Kubernetes Master
+
+Node1 Server
+
+Node2 Server
+
+📁 Project Structure
+Main EC2 VPC/
+│
+├── main.tf                # Main infrastructure resources
+├── variable.tf            # Input variable definitions
+├── terraform.tfvars       # Variable values
+├── terraformblock.tf      # Terraform & provider block
+├── terraform.tfstate.d/   # Terraform state backend (if used)
+└── README.md              # Project documentation
+
+🔧 Prerequisites
+
+Before running this project, ensure you have:
+
+AWS Account
+
+IAM User with EC2 & VPC permissions
+
+AWS CLI installed and configured
+
+Terraform installed (v1.x recommended)
+
+An existing EC2 Key Pair in AWS
+
+Verify AWS CLI:
+
+aws sts get-caller-identity
+
+
+Verify Terraform:
+
+terraform version
+
+🔑 EC2 Key Pair Requirement
+
+This project expects an existing EC2 Key Pair.
+
+Key pair name used:
+key_name = "Priacc_demo"
+
+
+Make sure this key pair exists in ap-south-1 region.
+
+Check using:
+
+aws ec2 describe-key-pairs --region ap-south-1
+
+
+If not present, create it from AWS Console or via Terraform.
+
+⚙️ Variables Configuration (terraform.tfvars)
+region         = "ap-south-1"
+ami_id         = "ami-02b8269d5e85954ef"
+key_name       = "Priacc_demo"
+instance_type  = "t3.medium"
+server1_volume = 20
+server2_volume = 15
+server3_volume = 10
+server4_volume = 10
+
+🚀 Deployment Steps
+1️⃣ Initialize Terraform
+terraform init
+
+2️⃣ Validate configuration
+terraform validate
+
+3️⃣ Preview changes
+terraform plan
+
+4️⃣ Apply infrastructure
+terraform apply
+
+
+Type yes when prompted.
+
+🧹 Destroy Infrastructure
+
+To delete all resources created by Terraform:
+
+terraform destroy
+
+⚠️ Security Notice
+
+Security Group allows all inbound & outbound traffic (0.0.0.0/0)
+⚠️ This is NOT recommended for production
+
+Use restricted CIDR blocks for SSH (port 22)
+
+📌 Best Practices Followed
+
+Variables separated using variable.tf
+
+Environment-specific values in terraform.tfvars
+
+Infrastructure as Code (IaC) approach
+
+Region-specific AMI usage
+
+📈 Possible Enhancements
+
+Use for_each or count for EC2 instances
+
+Add Elastic IPs
+
+Add Outputs for Public IPs
+
+Split code into reusable modules
+
+Secure Security Group rules
+
+Add backend (S3 + DynamoDB) for state locking
